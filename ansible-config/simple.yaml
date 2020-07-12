@@ -1,0 +1,96 @@
+---
+  - hosts: 127.0.0.1
+    become: yes
+    become_user: root
+    tasks:
+      - name: ensure a list of packages installed
+        yum:
+          name: "{{ item }}"
+          state: present
+        with_items:
+          - httpd
+          - httpd-tools
+
+      - name: enable services
+        service:
+          name: "{{ item }}"
+          enabled: yes
+          state: started
+        with_items:
+          - httpd
+
+      - name: Install Java 8
+        yum:
+          name=java-1.8.0-openjdk
+          state=present
+
+      - name: Ensure httpd is running
+        service:
+          name=httpd
+          state=started
+          enabled=yes
+          
+      - name: Install the MySQL repo.
+        yum:
+          name: http://repo.mysql.com/mysql-community-release-el7-5.noarch.rpm
+          state: present
+        when: ansible_os_family == "RedHat"
+
+      - name: Install MySQL
+        yum:
+          name: "{{ item }}"
+        with_items:
+          - MySQL-python
+          - mysql
+          - mysql-server
+
+      - name: Override variables for MySQL (RedHat).
+        set_fact:
+          mysql_daemon: mysqld
+          mysql_packages: ['mysql-server']
+          mysql_log_error: /var/lib/mysql/error.log
+          mysql_syslog_tag: mysqld
+          mysql_pid_file: /var/run/mysqld/mysqld.pid
+          mysql_socket: /var/lib/mysql/mysql.sock
+        when: ansible_os_family == "RedHat"
+      - name: Start the MySQL service
+        service:
+            name: mysqld
+            state: started
+
+      - name: Add tomcat group
+        group:
+          name: tomcat
+
+      - name: add user "tomcat"
+        user:
+          name: tomcat
+          group: tomcat
+          home: /usr/share/tomcat
+          createhome: no
+          system: yes
+
+      - name: Download Tomcat
+        get_url:
+          url=http://archive.apache.org/dist/tomcat/tomcat-7/v7.0.61/bin/apache-tomcat-7.0.61.tar.gz
+          dest=/opt/apache-tomcat-7.0.61.tar.gz
+
+      - name: Extract archive
+        command: chdir=/usr/share /bin/tar xvf /opt/apache-tomcat-7.0.61.tar.gz -C /opt/ creates=/opt/apache-tomcat-7.0.61
+
+      - name: Symlink install directory
+        file:
+          src=/opt/apache-tomcat-7.0.61
+          path=/usr/share/tomcat
+          state=link
+
+      - name: Change ownership of Tomcat installation
+        file:
+          path=/usr/share/tomcat/
+          owner=tomcat
+          group=tomcat
+          state=directory
+          recurse=yes
+
+      - name: start apache tomcat
+        shell: /usr/share/tomcat/bin/startup.sh
