@@ -29,7 +29,7 @@ The solutions to the above challenges resides under task1 and task2 dir.
 Get AWS accesskey and secret key and store it in your preferred path with a profile name called tfassessment for ex: C:\Users<username>.aws\credentials
 
 In Windows
-Now go to file backend.tf and replace the string "<shared_cred_path>" with the below format "C:\Users\\.aws\credentials"
+Now go to file backend.tf and replace the string "<shared_cred_path>" with the below format "C:\\Users\\.aws\\credentials"
 
 Do the same in task1\task1.tf and task2\task2.tf for authentication.
 
@@ -65,7 +65,9 @@ create = "true"
 
 "This is the master switch for creating the whole infra"
 
-terraform plan --var-file=dev.tfvars terraform apply --var-file=dev.tfvars --auto-approve
+terraform plan --var-file=dev.tfvars 
+
+terraform apply --var-file=dev.tfvars --auto-approve
 
 you can see a list of outputs, look for the output variable "state_bucket_id", which is the bucket name for our remote state management. Should be something like this.
 
@@ -76,6 +78,7 @@ As we know Remote Backend does not support interpolation we have to manually cop
 We can invoke both tasks in any order. Backend initialization is one time process assuming we have going in a sequence task1 and then task2, you dont have to perform step 3 in task2 instructions and vice versa as it was done in task1.
 
 Task1: (Problem #1 and Problem #2 combined)
+-------------------------------------------
 Execute the following commands from parent folder i.e: ~\terraform-assessment
 
 Change the parameter task1 in task1\task1.tfvars file to true; This is to enable and implement task1 solution.
@@ -109,6 +112,7 @@ Now do telnet localhost 8080, telnet localhost 80, telnet localhost 3306 to vali
 With this we have successfully completed task1.
 
 Task2: (Architecture Problem)
+-----------------------------
 
 Execute the following commands from parent folder i.e: ~\terraform-assessment
 
@@ -150,6 +154,7 @@ For updating the record, select PUT http://elbdns-xxxx.aws.amazon.com/update wit
 For deleting the record, select DELETE http://elbdns-xxxx.aws.amazon.com/delete/{customer-number} e.g: http://elbdns-xxxx.aws.amazon.com/delete/AU10042004
 With this we have successfully completed task2.
 
+------------------------------------------------------------------------------------------------------------------------------------------------------------
 For Kubernetes task: Navigate to kubernetes-assessment directory and invoke the below command. This solution is implemented in Docker for Desktop Kubernetes context
 
 cd kubernetes-assessment
