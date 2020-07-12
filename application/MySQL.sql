@@ -16,4 +16,4 @@ customersegment varchar(10)
 );
 
 #Insert test data
-insert ignore into customers(firstname, middlename, lastname, DOB, mobilenumber, gender, customernumber, countryofbirth, countryofresidence, customersegment) VALUES('Ragh', 'Test', 'Ram', '15-May-1990', '+6512345', 'M', 'AU10042002', 'US', 'SG', 'Retail');
+insert ignore into customers(firstname, middlename, lastname, DOB, mobilenumber, gender, customernumber, countryofbirth, countryofresidence, customersegment) VALUES('Firstname', 'Middlename', 'Lastname', '15-May-1990', '+6512345', 'M', 'AU10042002', 'US', 'SG', 'Retail');
