@@ -52,11 +52,16 @@ terraform validate
 
 run plan and apply for creating backed resouces(s3 and dynamodb), at this point the state file will be created in local
 dev.tfvars included user defined vairables for our environment
-cat dev.tfvars 
+cat dev.tfvars
+
 #Master variable
-#----------------------------------------- 
+
+#-----------------------------------------
+
 create = "true"
-#----------------------------------------- 
+
+#-----------------------------------------
+
 
 "This is the master switch for creating the whole infra"
 
