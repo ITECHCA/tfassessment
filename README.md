@@ -74,46 +74,83 @@ Task1: (Problem #1 and Problem #2 combined)
 Execute the following commands from parent folder i.e: ~\terraform-assessment
 
 Change the parameter task1 in task1\task1.tfvars file to true; This is to enable and implement task1 solution.
+
 Now switch to task1 workspace by invoking terraform workspace select task1 and do terraform init task1 .
+
 This is the important step as we are migrating the existing tf state to remote backend. Input yes to migrate our current state from local to s3. It will copy all state info including the workspaces created to s3 backend.
+
 From now on whatever resources we create it will be safely located in s3.
-do validate your tf files terraform validate
+
+do validate your tf files terraform validate.
+
 Perform terraform plan with the parameters from the parent directory, terraform plan --var-file=dev.tfvars --var-file=task1.tfvars
+
 Please be informed we need both dev.tfvars and task1.tfvars to create resources.
+
 If there isnt any errors it will produce your the list of resources we trying to create for task1.
+
 Review the plan, and do terraform apply --auto-approve --var-file=dev.tfvars --var-file=task1.tfvars
+
 After successful completion you can see the output for the resources created, look for the output apache_home_page and click the link provided. It will navigate you to the instance apache default page. Note: If you dont see any page, give it sometime as the instance is invoking ansible scripts for apache, tomcat, mysql.
+
 Now look for output string tomcat_home_page and click to open tomcat home page.
+
 Log in to the console and navigate to System Manager --> Parameter Store, you can see your ec2 private key stored in there.
+
 Copy and store it in your local to connect to ec2.
+
 Now do telnet localhost 8080, telnet localhost 80, telnet localhost 3306 to validate the task1 objective.
+
 With this we have successfully completed task1.
+
 Task2: (Architecture Problem)
+
 Execute the following commands from parent folder i.e: ~\terraform-assessment
 
 Change the parameter task2 in task2\task2.tfvars file to true; This is to enable and implement task2 solution.
-Now switch to task2 workspace by invoking terraform workspace select task2 and do terraform init task2 .
+
+Now switch to task2 workspace by invoking terraform workspace select task2 and do terraform init task2.
+
 This is the important step as we are migrating the existing tf state to remote backend. Input yes to migrate our current state from local to s3. It will copy all state info including the workspaces created to s3 backend.
+
 From now on whatever resources we create it will be safely located in s3.
-do validate your tf files terraform validate
-Perform terraform plan with the parameters from the parent directory, terraform plan --var-file=dev.tfvars --var-file=task2.tfvars
+
+do validate your tf files terraform validate.
+
+Perform terraform plan with the parameters from the parent directory, terraform plan --var-file=dev.tfvars --var-file=task2.tfvars.
+
 Please be informed we need both dev.tfvars and task2.tfvars to create resources.
+
 If there isnt any errors it will produce your the list of resources we trying to create for task2.
-Review the plan, and do terraform apply --auto-approve --var-file=dev.tfvars --var-file=task2.tfvars
+
+Review the plan, and do terraform apply --auto-approve --var-file=dev.tfvars --var-file=task2.tfvars.
+
 After successful completion you can see the output for the resources created, look for the output customers_page and click the link provided. It will navigate you to the application default response which is listing customers details from DB(RDS). Note: If you dont see any page, give it sometime as the instance is invoking userdata.
+
 For performing CRUD opertation, install postman software in local and click New -> Request In the request window select POST method and enter the value copied from the tf output add_customer i.e: http://elbdns-xxxx.aws.amazon.com/add.
+
 In the below window select Body tab Click raw radio button and select JSON from the dropdown, copy paste the below JSON file to add new customer details to DB. and click Send
 { "first-name":"Tom", "middle-name":"", "last-name":"Hanks", "date-of-birth":"10-May-1978", "mobile-number":"+6584321111", "gender":"M", "customer-number":"AU10042004", "country-of-birth":"US", "country-of-residence":"SG", "customer-segment":"Retail" }
 
 Successfull response will return Customer added successfully! in the below output window.
+
 To retreive the customer details, notedown the {customer-number} from the above json payload and perform the following in Postman terminal.
+
 Select GET method and paste the url http://elbdns-xxxx.aws.amazon.com/customer/{customer-number} e.g:http://elbdns-xxxx.aws.amazon.com/customer/AU10042004
+
 Successful execution will result in fetching the data inserted in the previous step. You can do the step 14 in your browser as well.
+
 For updating the record, select PUT http://elbdns-xxxx.aws.amazon.com/update with updated JSON payload as in step 11.
+
 For deleting the record, select DELETE http://elbdns-xxxx.aws.amazon.com/delete/{customer-number} e.g: http://elbdns-xxxx.aws.amazon.com/delete/AU10042004
 With this we have successfully completed task2.
+
 For Kubernetes task: Navigate to kubernetes-assessment directory and invoke the below command. This solution is implemented in Docker for Desktop Kubernetes context
 
+cd kubernetes-assessment
+
 kubectl apply -k .
+
 kubectl get all -n nginx-demo
+
 type localhost:30008 in the browser to see the desired page.
