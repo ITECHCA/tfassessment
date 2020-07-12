@@ -1,0 +1,9 @@
+generatorOptions:
+  disableNameSuffixHash: true
+commonLabels:
+  app: nginx-hello-world
+namespace: nginx-demo
+resources:
+  - yaml/nginx-namespaces.yaml
+  - yaml/nginx-deployment.yaml
+  - yaml/nginx-services.yaml
