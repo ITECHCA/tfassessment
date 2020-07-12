@@ -5,7 +5,7 @@ terraform {
 provider "aws" {
   version = "~> 2.8"
   region  = var.region
-  shared_credentials_file = "C:\\Users\\raghavan_r\\.aws\\credentials"
+  shared_credentials_file = "<shared_cred_path>"
   profile                 = "tfassesment"
 }
 
@@ -98,17 +98,17 @@ resource "aws_dynamodb_table" "lock" {
   tags = var.tags
 }
 
-terraform {
-  backend "s3" {
-    shared_credentials_file = "C:\\Users\\raghavan_r\\.aws\\credentials"
-    profile                 = "tfassesment"
-    bucket = "tf-remote-state20200709180314971200000001"
-    key    = "terraform.tfstate"
-    region = "ap-southeast-1"
-    encrypt = true
-    dynamodb_table = "remote-state-lock"
-  }
-}
+#terraform {
+ # backend "s3" {
+  #  shared_credentials_file = "<shared_cred_path>"
+   # profile                 = "tfassesment"
+   # bucket = "<state_bucket_name>"
+   # key    = "terraform.tfstate"
+   # region = "ap-southeast-1"
+   # encrypt = true
+   # dynamodb_table = "remote-state-lock"
+  #}
+#}
 
 
 output "state_bucket_id" {
