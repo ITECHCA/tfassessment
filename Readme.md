@@ -1,14 +1,18 @@
 Challenge:
 
 task1: https://gist.github.com/houdinisparks/1e0fcdc9bb1c0d6d426e765ab6dc2abd
+
 task2: https://gist.github.com/houdinisparks/b8dcd1d2b5b1179b45b0afe68351e027
 
 Install terraform locally with latest version or any vervion above 0.12
+
 choco install terraform -my
+
 choco install terraform --version 0.12.5 -my
 
 # Following are the versions used for TF providers
 > terraform version
+
 Terraform v0.12.28
 + provider.archive v1.3.0
 + provider.aws v2.69.0
@@ -77,7 +81,7 @@ for ex: C:\Users\<username>\.aws\credentials
 
 In Windows
 ----------
-Now go to file backend.tf and replace the string "<shared_cred_path>" with the below format "C:\\Users\\<username>\\.aws\\credentials"
+Now go to file backend.tf and replace the string "<shared_cred_path>" with the below format "C:\\\Users\\<username>\\\.aws\\\credentials"
 
 Do the same in task1\task1.tf and task2\task2.tf for authentication.
 
@@ -103,18 +107,24 @@ Steps to implement the solution
 # do validate the templates
 > terraform validate
 
-# run plan and apply for creating backed resouces(s3 and dynamodb), at this point the state file will be created in local
-# dev.tfvars included user defined vairables for our environment
+#run plan and apply for creating backed resouces(s3 and dynamodb), at this point the state file will be created in local
+#dev.tfvars included user defined vairables for our environment
 
 > cat dev.tfvars
+
 #Master variable
+
 #-----------------------------------------
+
 create = "true"
+
 #-----------------------------------------
+
 "This is the master switch for creating the whole infra"
 
 
 > terraform plan --var-file=dev.tfvars
+
 > terraform apply --var-file=dev.tfvars --auto-approve
 
 you can see a list of outputs, look for the output variable "state_bucket_id", which is the bucket name for our remote state management. Should be something like this.
@@ -129,7 +139,8 @@ Enable the Backend config in both task1\task1.tf and task2\task2.tf file by remo
 We can invoke both tasks in any order. Backend initialization is one time process assuming we have going in a sequence task1 and then task2, you dont have to perform `step 3` in task2 instructions and vice versa as it was done in task1.
 
 Task1: (Problem #1 and Problem #2 combined)
-------
+-------------------------------------------
+
 Execute the following commands from parent folder i.e: ~\terraform-assessment
 1. Change the parameter `task1` in task1\task1.tfvars file to `true`; This is to enable and implement task1 solution.
 2. Now switch to task1 workspace by invoking `terraform workspace select task1` and do `terraform init task1` .
@@ -151,7 +162,8 @@ With this we have successfully completed task1.
 ---------------------------------------------------------------------------------------------------------------------------------------
 
 Task2: (Architecture Problem)
------
+-----------------------------
+
 Execute the following commands from parent folder i.e: ~\terraform-assessment
 1. Change the parameter `task2` in task2\task2.tfvars file to `true`; This is to enable and implement task2 solution.
 2. Now switch to task2 workspace by invoking `terraform workspace select task2` and do `terraform init task2` .
@@ -185,7 +197,6 @@ Execute the following commands from parent folder i.e: ~\terraform-assessment
 15. Successful execution will result in fetching the data inserted in the previous step. You can do the step 14 in your browser as well.
 16. For updating the record, select `PUT` http://elbdns-xxxx.aws.amazon.com/update with updated JSON payload as in step 11.
 17. For deleting the record, select `DELETE` http://elbdns-xxxx.aws.amazon.com/delete/{customer-number} e.g: http://elbdns-xxxx.aws.amazon.com/delete/AU10042004
-
 
 
 With this we have successfully completed task2.
