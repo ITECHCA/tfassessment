@@ -92,16 +92,22 @@ Steps to implement the solution
 
 # create workspace called commonws if not exists
 > terraform workspace new commonws
+
 > terraform workspace new task1
+
 > terraform workspece new task2
 
 > terraform workspace select commonws
 
 # View the workspace created
 > terraform workspace list
+
   default
+  
 * commonws
+
   task1
+  
   task2
 
 # do validate the templates
